@@ -27,7 +27,8 @@ import Image from "next/image"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 import { useSession } from "@/lib/auth-client"
 import { signOut } from "@/lib/auth-client"
-import { socials } from "@/constants/links"
+import Link from "next/link"
+import { useGetLinks } from "@/hooks/useGetLinks"
 
 const navigationItems = [
   {
@@ -157,6 +158,11 @@ function MobileSidebar() {
 
 export default function HomePage() {
   const { data } = useSession()
+  const { data: socials, loading, error } = useGetLinks()
+  if(error){
+    alert("Ught, something went wrong...")
+    alert(error)
+  }
   // if(!data?.user.isApplied) return redirect("/")
   return (
     <ProtectedPage>
@@ -185,11 +191,11 @@ export default function HomePage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button asChild className="w-full">
-                    <a href={socials.whatsapp} target="_blank" rel="noopener noreferrer">
+                  <Button asChild className={loading ? "w-full cursor-not-allowed opacity-50" : "w-full"}>
+                    <Link href={socials?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">
                       Join WhatsApp group
                       <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -202,11 +208,11 @@ export default function HomePage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button asChild className="w-full" variant={"outline"}>
-                    <a href={socials.discord} target="_blank" rel="noopener noreferrer">
+                  <Button asChild className={loading ? "w-full cursor-not-allowed opacity-50" : "w-full"} variant={"outline"}>
+                    <Link href={socials?.discord || "#"} target="_blank" rel="noopener noreferrer">
                       Join Discord server
                       <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>
