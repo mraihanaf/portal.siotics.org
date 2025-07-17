@@ -5,6 +5,19 @@ import db from "@/lib/db";
  
 export const auth = betterAuth({
     database: drizzleAdapter(db, { provider: "pg" }),
+    rateLimit: { 
+        enabled: true,
+        window: 60,
+        max: 100,
+        customRules: {
+            "/send-verification-email": {
+                window: 60,
+                max: 1
+            }
+        },
+        storage: "database",
+        model: "rateLimit"
+    },
     onAPIError: {
         errorURL: "/"
     },
