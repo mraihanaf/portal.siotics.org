@@ -116,7 +116,7 @@ export default function LoginForm(
                 <p className="text-sm text-red-500">{error}</p>
               )}
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full" disabled={loading} onClick={handleEmailSignIn}>
+                <Button type="submit" className={loading ? "w-full cursor-not-allowed opacity-50" : "w-full"} disabled={loading} onClick={handleEmailSignIn}>
                   {loading ? "Logging in..." : "Login"}
                 </Button>
                 <Button

@@ -20,12 +20,13 @@ import Image from "next/image";
 import { EyeIcon, EyeClosed } from "lucide-react";
 
 import { SignupSchema } from "@/schema/signup";
-import { signIn } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 
 type SignupFormValues = z.infer<typeof SignupSchema>;
 
 export default function SignUpForm() {
   const [isView, setIsView] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(SignupSchema),
@@ -38,12 +39,22 @@ export default function SignUpForm() {
   });
 
   const onSubmit = async (data: SignupFormValues) => {
+    setLoading(true)
     try {
-      console.log(data)
-    } catch (err) {
-      console.error(err);
-      form.setError("root", { message: "Failed to sign up. Please try again." });
-    }
+      const res = await signUp.email({
+        email: data.email,
+        name: data.fullName,
+        password: data.password
+      })
+      if(res.error) form.setError("root", {
+        type: "server",
+        message: res?.error?.message || "Failed to sign up. Please try again."
+      })
+    } catch(error) {
+      console.error(error)
+    }  
+    setLoading(false)
+     
   };
 
   return (
@@ -142,9 +153,15 @@ export default function SignUpForm() {
                 )}
               />
 
+        {form.formState.errors.root && (
+             <p className="text-sm text-red-500">
+                {form.formState.errors.root.message}
+            </p>
+          )}
+
               {/* Submit Button */}
-              <Button type="submit" className="w-full">
-                Sign Up
+              <Button type="submit" className={loading ? "w-full cursor-not-allowed opacity-50" : "w-full"}>
+                {loading ? "Signing Up..." : "Sign Up"}
               </Button>
 
               {/* Google Sign Up */}
@@ -170,13 +187,6 @@ export default function SignUpForm() {
                 />
                 <span>Sign up with Google</span>
               </Button>
-
-              {/* Root-level error */}
-              {form.formState.errors.root && (
-                <p className="text-sm text-red-500">
-                  {form.formState.errors.root.message}
-                </p>
-              )}
 
               {/* Link to Sign In */}
               <p className="text-center text-sm mt-4">
