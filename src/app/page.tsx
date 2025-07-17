@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import IntroCard from "@/components/layouts/IntroCard";
 import ApplicationFormCard from "@/components/layouts/ApplicationFormCard";
 import ProtectedPage from "@/components/pages/ProtectedPage";
@@ -15,12 +15,8 @@ export default function ApplicationPage() {
   const [appState, setAppState] = useState(AppState.INTRO);
   const session = useSession();
 
-  useEffect(() => {
-    if (session.data?.user.isApplied) {
-      redirect("/home");
-    }
-  }, [session.data?.user.isApplied]);
-
+  if(session.data?.user.isApplied) return redirect("/home")
+  
   return (
     <ProtectedPage>
       <div className="flex items-center justify-center min-h-screen">
