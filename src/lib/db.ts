@@ -8,7 +8,7 @@ const schema = { ...AuthSchema, ...DBSchema };
 
 let db: ReturnType<typeof drizzleNeon> | ReturnType<typeof drizzlePostgres>
 
-if(process.env.NODE_ENV === "test"){
+if(process.env.NODE_ENV === "production"){
   const sql = neon(process.env.DATABASE_URL!)
   db = drizzleNeon({ client: sql, schema: schema })
 } else {
