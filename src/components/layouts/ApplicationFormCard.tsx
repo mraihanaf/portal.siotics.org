@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm, useWatch } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod/v4";
 
@@ -86,12 +86,15 @@ export default function ApplicationFormCard({
     }
   }, [major, form, parallelChoices]);
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const onSubmit = async (data: RegistrationFormValues) => {
+    setIsSubmitting(true)
     await updateUser({
         ...data,
         isApplied: true
     })
+    setIsSubmitting(false)
   };
   return (
     <ProtectedPage>
@@ -256,7 +259,7 @@ export default function ApplicationFormCard({
                 name="reasonToJoin"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Kenapa kamu join Siotics.</FormLabel>
+                    <FormLabel>Alasan kamu join Siotics.</FormLabel>
                     <FormControl>
                         <Textarea placeholder="Tulis alasanmu di sini..." {...field}></Textarea>
                     </FormControl>
@@ -275,7 +278,7 @@ export default function ApplicationFormCard({
                 >
                   Kembali
                 </Button>
-                <Button size="lg" type="submit">
+                <Button size="lg" type="submit" className={isSubmitting ? "cursor-not-allowed opacity-50" : ""}>
                   Daftar
                 </Button>
               </div>
