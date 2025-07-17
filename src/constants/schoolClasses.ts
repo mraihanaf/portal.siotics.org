@@ -45,7 +45,7 @@ export const SchoolClasses: ISchoolClass[] = [
     {
         major: "Teknik Instalasi Tenaga Listrik",
         majorAbbreviation: "TITL",
-        parallelChoices: [1,2],
+        parallelChoices: [1,2,3],
         gradeLevels: ["X","XI","XII","XIII"]
     },
     {
