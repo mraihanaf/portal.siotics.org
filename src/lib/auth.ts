@@ -5,6 +5,12 @@ import db from "@/lib/db";
  
 export const auth = betterAuth({
     database: drizzleAdapter(db, { provider: "pg" }),
+    session: {
+        cookieCache: {
+            enabled: true,
+            maxAge: 5 * 60
+        },
+    },
     rateLimit: { 
         enabled: true,
         window: 60,
