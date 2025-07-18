@@ -46,15 +46,11 @@ export default function SignUpForm() {
         name: data.fullName,
         password: data.password
       })
-      if(res.error) form.setError("root", {
-        type: "server",
-        message: res?.error?.message || "Failed to sign up. Please try again."
-      })
     } catch(error) {
       console.error(error)
-    }  
-    setLoading(false)
-     
+    }  finally {
+      setLoading(false)
+    }
   };
 
   return (
