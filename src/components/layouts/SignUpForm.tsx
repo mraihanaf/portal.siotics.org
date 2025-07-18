@@ -13,10 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import Image from "next/image";
-import { EyeIcon, EyeClosed } from "lucide-react";
 
 import { SignupSchema } from "@/schema/signup";
 import { signIn, signUp } from "@/lib/auth-client";
@@ -24,9 +22,8 @@ import { signIn, signUp } from "@/lib/auth-client";
 type SignupFormValues = z.infer<typeof SignupSchema>;
 
 export default function SignUpForm() {
-  const [isView, setIsView] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  console.log(loading)
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
@@ -50,9 +47,10 @@ export default function SignUpForm() {
       onSuccess: () => {
           setLoading(false)
       },
-      onError: () => {
+      onError: (ctx) => {
           // display the error message
-          
+          alert(ctx.error.message)
+          setLoading(false)
       },
 });
   };
@@ -69,101 +67,7 @@ export default function SignUpForm() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Full Name */}
-              <FormField
-                control={form.control}
-                name="fullName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Full Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Email */}
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="rai@siotics.org"
-                        type="email"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Password */}
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          type={isView ? "text" : "password"}
-                          {...field}
-                          className="pr-10"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setIsView(!isView)}
-                          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-                        >
-                          {isView ? (
-                            <EyeIcon className="w-5 h-5" />
-                          ) : (
-                            <EyeClosed className="w-5 h-5" />
-                          )}
-                        </button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Confirm Password */}
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type={isView ? "text" : "password"}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-        {form.formState.errors.root && (
-             <p className="text-sm text-red-500">
-                {form.formState.errors.root.message}
-            </p>
-          )}
-
-              {/* Submit Button */}
-              <Button type="submit" className={loading ? "w-full cursor-not-allowed opacity-50" : "w-full"}>
-                {loading ? "Signing Up..." : "Sign Up"}
-              </Button>
-
+             
               {/* Google Sign Up */}
               <Button
                 type="button"
