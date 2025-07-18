@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,19 +37,24 @@ export default function SignUpForm() {
     },
   });
 
-  const onSubmit = async (data: SignupFormValues) => {
-    setLoading(true)
-    try {
-      await signUp.email({
-        email: data.email,
-        name: data.fullName,
-        password: data.password
-      })
-    } catch(error) {
-      console.error(error)
-    }  finally {
-      setLoading(false)
-    }
+  const onSubmit = async ({email, password, fullName}: SignupFormValues) => {
+    await signUp.email({
+      email: email,
+      password: password,
+      name: fullName,
+      callbackURL: "/"
+  }, {
+      onRequest: () => {
+          setLoading(true)
+      },
+      onSuccess: () => {
+          setLoading(false)
+      },
+      onError: () => {
+          // display the error message
+          
+      },
+});
   };
 
   return (
