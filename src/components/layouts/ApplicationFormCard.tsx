@@ -245,7 +245,7 @@ export default function ApplicationFormCard({
                               )))
                             }
                         </SelectContent>
-                        {(grade && parallelChoices && !Number.isNaN(parallelChoices)) && <p className="text-sm font-bold">Kelas Kamu : {grade}-{toMajorAbbreviation(major)} {gradeParallel}</p>}
+                        {(grade && gradeParallel && !Number.isNaN(gradeParallel)) && <p className="text-sm font-bold">Kelas Kamu : {grade}-{toMajorAbbreviation(major)} {gradeParallel}</p>}
                     </Select>
                     <FormMessage />
                   </FormItem>
